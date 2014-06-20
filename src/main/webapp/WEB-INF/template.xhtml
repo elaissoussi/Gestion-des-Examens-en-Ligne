@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Testez tes connaissances en ligne</title>
+</h:head>
+<h:body>
+	<p:layout fullPage="true" style="width=80">
+
+		<p:layoutUnit position="north" size="100" header="" closable="" collapsible="">
+		<ui:insert  name="header">
+		      <ui:include src="/WEB-INF/header.xhtml"></ui:include>
+		</ui:insert>
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="center">
+		<ui:insert name="center">
+		</ui:insert>
+		</p:layoutUnit>
+		
+		
+         <p:layoutUnit position="west" size="200" header="" >
+          <ui:insert name="leftmenu">
+           			<ui:include src="/WEB-INF/leftmenu.xhtml"></ui:include>
+            </ui:insert>
+		</p:layoutUnit>
+		
+		
+         <p:layoutUnit position="south" size="60" header=""   >
+           <ui:insert name="footer">
+           			<ui:include src="/WEB-INF/footer.xhtml"></ui:include>
+            </ui:insert>
+		</p:layoutUnit>
+		
+		
+	</p:layout>
+</h:body>
+</html>

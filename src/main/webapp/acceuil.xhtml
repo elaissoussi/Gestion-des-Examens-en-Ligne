@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+       <p:growl id="growl" showDetail="true" />
+		<h:form  id="login">
+		<p:fieldset legend="Authentification">
+			<h:panelGrid columns="5" cellpadding="6">
+			 
+				<h:outputLabel for="Login" value="Identifiant :" />
+		
+                <p:inputText id="Login"  value="#{loginBean.login}"   label="Login"/>
+				<h:outputLabel for="password" value="Mot de Passe " />
+       			<p:password id="password"  required="true" value="#{loginBean.motdepasse}" label="password" 
+       			  requiredMessage="Entrez SVP votre password"/>
+				<p:commandButton value="Connexion"  type="submit" update=":growl" actionListener="#{loginBean.login}" />
+				    <p:message for="password"/>
+				
+			</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form style="margin-top:20px" >
+		<p:fieldset legend="Inscription">
+			<h:panelGrid columns="3" cellpadding="5"  style="margin-top:20px" >
+			
+				<h:outputLabel for="Nom" value="Nom *"  />
+				<p:inputText value="#{utilisateurBean.utilisateur.nom}" id="Nom"
+					required="true" label="Nom" requiredMessage="SVP entrez votre Nom"/>
+				<p:message for="Nom"/>	
+				
+				<h:outputLabel for="Prenom" value="Prénom *" />
+				<p:inputText value="#{utilisateurBean.utilisateur.prenom}" id="Prenom"
+					required="true" label="username" requiredMessage="SVP entrez votre prénom" />
+				<p:message for="Prenom"/>	
+				
+					
+					
+				<h:outputLabel for="Login" value="Identifiant *" />
+				<p:inputText value="#{utilisateurBean.utilisateur.login}" id="Login"  
+				requiredMessage="SVP entrez votre Login  "
+					required="true" label="Login" />
+				<p:message for="Login"/>	
+					
+				<h:outputLabel for="password" value="Mot de Passe *" />
+				<p:inputText value="#{utilisateurBean.utilisateur.motDePasse}" id="password"
+					required="true" label="password" requiredMessage="SVP entrez votre password  "/>
+			     <p:message for="password"/>	
+		
+					
+					           
+			     <h:outputLabel for="statut" value="Profil *" />
+				 <p:selectOneMenu id="statut" value="#{utilisateurBean.utilisateur.statut}" 
+				  converter="#{statutConverter}"  required="true"  requiredMessage="SVP entrer vorte statut " >  
+                <f:selectItems value="#{utilisateurBean.statutList}" var="_s" itemValue="#{_s}" itemLabel="#{_s.statut}" />
+                <p:ajax update="profession" />       
+                <f:converter converterId="com.e2a.examenenligne.converter.ObjectConverter"/>         
+                 </p:selectOneMenu> 
+                 <p:message for ="statut"/>
+                 
+                <h:outputLabel for="profession" value="profession" />
+				<p:inputText value="#{utilisateurBean.utilisateur.profession}" id="profession"
+					 label="profession"  disabled="#{utilisateurBean.utilisateur.statut.statut == 'Utilisateur'}"  
+					 />
+				 <p:message for ="profession"/>
+				
+				<p:commandButton value="S'inscrire"  ajax="false" action="#{utilisateurBean.createUtilisateurBean}" />
+				
+			</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

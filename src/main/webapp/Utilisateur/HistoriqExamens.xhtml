@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+
+		<h:form id="form">
+			<p:dataTable id="dataTable" var="hexamen"
+				selection="#{historiquesBean.selectedHExamen}"
+				value="#{historiquesBean.lazyModel}" paginator="true" rows="5"
+				lazy="true" styleClass="userDataTableStyle" selectionMode="single"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10">
+
+				<f:facet name="header">
+                    Historiques des Examens Passés
+                </f:facet>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Date de Passage" />
+					</f:facet>
+					<h:outputText value="#{hexamen.datePassage}" >
+					<f:convertDateTime  pattern="MM/dd/YYYY 'à' hh:mm"/>
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Titre d'examen" />
+					</f:facet>
+					<h:outputText value="#{hexamen.examen.titre}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Type" />
+					</f:facet>
+					<h:outputText value="#{hexamen.examen.type}" />
+				</p:column>
+				<p:column>
+				
+					<f:facet name="header">
+						<h:outputText value="Score" />
+					</f:facet>
+					<h:outputText value="#{hexamen.scoreExam}" />
+				</p:column>
+				
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Détails" />
+					</f:facet>
+					
+		         <p:commandLink value="Afficher les détails QCM "  action="#{historiquesBean.afficherDetails}" ajax="false"  >
+					<f:setPropertyActionListener value="#{hexamen}"   target="#{historiquesBean.selectedHExamen}" />
+					</p:commandLink>
+					
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

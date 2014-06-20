@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+
+		<h:form id="form">
+			<p:dataTable id="dataTable" var="user"
+				value="#{utilisateurBean.lazyModel}" paginator="true" rows="10"
+				lazy="true" styleClass="userDataTableStyle" selectionMode="single"
+				selection="#{utilisateurBean.selectedUser}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15">
+				<f:facet name="header">
+                    Liste des utilisateurs 
+                </f:facet>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nom" />
+					</f:facet>
+
+					<p:commandLink value="#{user.nom}" update=":userDetailForm:display"
+						oncomplete="userDialog.show()" title="Afficher">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{utilisateurBean.selectedUser}" />
+					</p:commandLink>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Login" />
+					</f:facet>
+					<h:outputText value="#{user.login}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Statut" />
+					</f:facet>
+					<h:outputText value="#{user.statut.statut}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="profession" />
+					</f:facet>
+					<h:outputText value="#{user.profession}" />
+				</p:column>
+
+
+
+
+
+				<f:facet name="footer">
+					<p:commandButton value="Céer Utilisateur" oncomplete="newUserDialog.show()"
+						icon="ui-icon-star" title="Creer un nouveau  Utilisateur" />
+					<p:commandButton value="Supprimer Utilisateur"
+						actionListener="#{utilisateurBean.doDelete}"
+						update="dataTable" icon="ui-icon-trash" />
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+
+
+
+
+		<p:dialog header="Détails Utilisateur" widgetVar="userDialog"
+			resizable="false" id="userDlg" hideEffect="explode">
+			<h:form id="userDetailForm">
+
+				<p:panelGrid id="display" columns="2" cellpadding="4"
+					style="margin:0 auto;">
+
+					<h:outputText value="Nom :"></h:outputText>
+					<h:inputText value="#{utilisateurBean.selectedUser.nom}" />
+
+					<h:outputText value="Prénom :"></h:outputText>
+					<h:inputText value="#{utilisateurBean.selectedUser.prenom}"
+						required="true" requiredMessage="Please Enter Name!" />
+
+					<h:outputText value="Login :"></h:outputText>
+					<h:inputText value="#{utilisateurBean.selectedUser.login}"
+						required="true" requiredMessage="Please Enter Login" />
+
+					<h:outputText value="Mot de passe  :"></h:outputText>
+					<h:inputText value="#{utilisateurBean.selectedUser.motDePasse}"
+						required="true" requiredMessage="Please Enter Mot de passe " />
+
+					<h:outputText value="Profesion :"></h:outputText>
+					<h:inputText value="#{utilisateurBean.selectedUser.profession}"
+						required="true" requiredMessage="Please Enter Profesion" />
+
+
+					<h:outputText value="Statut :"></h:outputText>
+					<p:selectOneMenu id="statut"
+						value="#{utilisateurBean.selectedUser.statut}"
+						requiredMessage="SVP entrer  statut ">
+						<f:selectItems value="#{utilisateurBean.statutLists}" var="_s"
+							itemValue="#{_s}" itemLabel="#{_s.statut}" />
+							<f:converter  converterId="com.e2a.examenenligne.converter.ObjectConverter"/>
+					</p:selectOneMenu>
+
+					<f:facet name="footer">
+						<p:commandButton value="Update" update=":form:dataTable, :growl"
+							oncomplete="handleSubmitRequest(xhr, status, args, 'userDlg','newUserForm'); "
+							actionListener="#{utilisateurBean.doUpdateUser}" />
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Nouveau Utilisateur" widgetVar="newUserDialog"
+			resizable="false" id="newUserDlg"  hideEffect="explode">
+			<h:form id="newUserForm">
+				<p:panelGrid id="displayNewUser" columns="2" cellpadding="4" >
+					
+			    <h:outputLabel for="Nom" value="Nom *"  />
+				<p:inputText value="#{utilisateurBean.newUser.nom}" id="Nom"
+					required="true" label="Nom" requiredMessage="SVP entrez votre Nom"/>
+				
+				<h:outputLabel for="Prenom" value="Prenom *" />
+				<p:inputText value="#{utilisateurBean.newUser.prenom}" id="Prenom"
+					required="true" label="username" requiredMessage="SVP entrez votre prénom" />
+				
+					
+					
+				<h:outputLabel for="Login" value="Login *" />
+				<p:inputText value="#{utilisateurBean.newUser.login}" id="Login"  
+				requiredMessage="SVP entrez votre Login  "
+					required="true" label="Login" />
+					
+				<h:outputLabel for="password" value="password *" />
+				<p:inputText value="#{utilisateurBean.newUser.motDePasse}" id="password"
+					required="true" label="password" requiredMessage="SVP entrez votre password  "/>
+		
+					
+					           
+			     <h:outputLabel for="statut" value="Statut *" />
+				 <p:selectOneMenu id="statut" value="#{utilisateurBean.newUser.statut}" 
+				    required="true"  requiredMessage="SVP entrer vorte statut " >  
+                <f:selectItems value="#{utilisateurBean.statutLists}" var="_s" itemValue="#{_s}" itemLabel="#{_s.statut}" />
+             	<f:converter  converterId="com.e2a.examenenligne.converter.ObjectConverter"/>
+                <p:ajax update="profession" />                
+                 </p:selectOneMenu> 
+                 
+                <h:outputLabel for="profession" value="profession *" />
+				<p:inputText value="#{utilisateurBean.newUser.profession}" id="profession"
+					 label="profession"  disabled="#{utilisateurBean.newUser.statut.statut == 'Utilisateur'}"  
+					 />
+				 
+				 
+					<f:facet name="footer">
+						<p:commandButton value="Créer" update=":form:dataTable, :growl"
+							oncomplete=" handleSubmitRequest(xhr, status, args, 'newUserDlg','newUserForm');"
+							actionListener="#{utilisateurBean.doCreateUser}" />
+						<p:commandButton type="reset" value="Reset"></p:commandButton>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+		<p:growl id="growl" showDetail="true" life="5000" />
+		<script type="text/javascript">  
+    function handleSubmitRequest(xhr, status, args, dialogName, formName) {  
+            dialog = jQuery('#'+dialogName);
+        if(args.validationFailed) {  
+            dialog.effect("shake", { times:3 }, 100);  
+        } else {
+            clearForm(formName);
+            newUserDialog.hide(); 
+            userDialog.hide(); 
+        }  
+    }
+    function clearForm(formName){
+        jQuery('#'+formName).each(function(){
+	        this.reset();
+	});
+    }
+</script>
+	</ui:define>
+</ui:composition>
+</html>

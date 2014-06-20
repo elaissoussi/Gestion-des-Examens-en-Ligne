@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+      <h:form>
+         
+            <p:menu  >
+                    <c:if test="#{request.isUserInRole('Administrateur')}">
+                        <p:menuitem value="Acceuil" action="/Administrateur/index.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-home" /> 
+                        <p:menuitem value="Utilisateurs" action="/Administrateur/utilisateurs.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-person"/>
+                    </c:if>
+                    <c:if test="#{request.isUserInRole('Utilisateur')}">
+                        
+                        <p:menuitem value="Acceuil" action="/Utilisateur/index.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-person"/>
+                        <p:menuitem value="Examens" action="/Utilisateur/examens.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-disk"/>
+                        <p:menuitem value="Historique" action="/Utilisateur/HistoriqExamens.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-disk"/>
+                        
+                    </c:if>
+                      <c:if test="#{request.isUserInRole('Expert')}">
+                        <p:menuitem value="Acceuil" action="/Expert/index.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-home" /> 
+                         <p:menuitem value="QCM" action="/Expert/examMC.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-pencil" />
+                         <p:menuitem value="QD" action="/Expert/examQD.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-pencil" /> 
+                        <p:menuitem value="Examens" action="/Expert/listExam.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-disk" /> 
+                        
+                    </c:if>
+                    <c:if test="#{request.getUserPrincipal() != null}">
+                        <p:menuitem value="Déconnexion" action="#{loginBean.logout}" icon="ui-icon-power"/>
+                    </c:if>  
+            </p:menu>
+        </h:form>
+        
+ 
+</html>
+
+         
+        

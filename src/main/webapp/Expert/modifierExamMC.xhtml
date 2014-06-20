@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+<h:body>
+ 
+ 
+<h:form>
+   <p:selectOneMenu id="categorie" value="#{examensExpertBean.selectedExamen.categorie}" required="true">  
+                 <f:selectItem itemLabel="#{examensExpertBean.selectedExamen.categorie}" itemValue="#{examensExpertBean.selectedExamen.categorie}"/>  
+                 <f:selectItems value="#{examensExpertBean.listCategories}" />  
+     </p:selectOneMenu>
+                  <p:outputLabel for="Titre" value="Titre de L'examen" />
+				  <p:inputText value="#{examensExpertBean.selectedExamen.titre}"  id="Titre" required="true" label="Titre" />
+				  <p:watermark for="Titre" value="#{examensExpertBean.selectedExamen.titre}" />
+				  
+                  <p:separator />  
+    <h:dataTable Rules="all"  value="#{examensExpertBean.selectedExamen.questions}"  var="quest">
+     <p:column>
+
+      <ui:repeat value="Question N° #{quest.order}" var="ordre" >
+        #{ordre}
+    </ui:repeat>
+     </p:column>
+    
+    <h:column>
+      <f:facet name="header">
+      <h:outputText value="Question" />
+      </f:facet>
+      <h:inputTextarea id="#{quest.order}" rows="3" cols="50" value="#{quest.question}" queryDelay="150" minQueryLength="4"  />
+      <p:watermark for="#{quest.order}" value="#{quest.question}" />
+    </h:column>
+    
+     <h:column>
+      <f:facet name="header">
+      <h:outputText value="Choix 1" />
+      </f:facet>
+      <h:inputTextarea rows="2" cols="50" value="#{quest.choix[0].choix}"  queryDelay="150" minQueryLength="4"  />
+      <p:watermark for="choix0#{quest.order}" value="#{quest.choix[0].choix}" />
+      <p:selectOneButton value="#{quest.choix[0].bonReponse}" required= "true">  
+            <f:selectItem itemLabel="Vrai" itemValue="true" />  
+            <f:selectItem itemLabel="Faux" itemValue="false" />   
+        </p:selectOneButton>  
+    </h:column>
+    <h:column>
+      <f:facet name="header">
+      <h:outputText value="Choix 2" />
+      </f:facet>
+      <h:inputTextarea rows="2" cols="50" value="#{quest.choix[1].choix}"  queryDelay="150" minQueryLength="4"  />
+      <p:watermark for="choix1#{quest.order}" value="#{quest.choix[1].choix}" />
+      <p:selectOneButton value="#{quest.choix[1].bonReponse}" required= "true">  
+            <f:selectItem itemLabel="Vrai" itemValue="true" />  
+            <f:selectItem itemLabel="Faux" itemValue="false" />   
+        </p:selectOneButton>  
+    </h:column>
+    <h:column>
+      <f:facet name="header">
+      <h:outputText value="Choix 3" />
+      </f:facet>
+      <h:inputTextarea rows="2" cols="50" value="#{quest.choix[2].choix}"  queryDelay="150" minQueryLength="4" />
+      <p:watermark for="choix2#{quest.order}" value="#{quest.choix[2].choix}" />
+    <p:selectOneButton value="#{quest.choix[2].bonReponse}" required= "true">  
+            <f:selectItem itemLabel="Vrai" itemValue="true" />  
+            <f:selectItem itemLabel="Faux" itemValue="false"/>  
+        </p:selectOneButton>  
+    </h:column>
+    </h:dataTable>
+     <p:separator />  
+   <p:commandButton action="#{ExamensExpertBean.modifierExamen}"  type="submit" value="Valider la Modification"/>
+</h:form>
+</h:body>
+	</ui:define>
+	
+</ui:composition>
+</html>

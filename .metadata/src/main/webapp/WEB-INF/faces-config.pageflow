@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13875747368530" configfile="/examenenligne/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="acceuil.xhtml" id="pf13875751636314" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" outlinks="pf13876139604370" inlinks="pf13876139604370" path="/acceuil.xhtml"/>
+  <links id="pf13876139604370" target="pf13875751636314" source="pf13875751636314" outcome="failure" redirect="true"/>
+</pageflow:Pageflow>

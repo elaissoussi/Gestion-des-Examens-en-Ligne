@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+
+		<h:form id="form">
+			<p:dataTable id="dataTable" var="examen"
+				selection="#{examenBean.selectedExamen}"
+				value="#{examenBean.lazyModel}" paginator="true" rows="5"
+				lazy="true" styleClass="userDataTableStyle" selectionMode="single"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10">
+
+				<f:facet name="header">
+                    Liste des Examens 
+                </f:facet>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Titre" />
+					</f:facet>
+					<h:outputText value="#{examen.titre}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Catégorie" />
+					</f:facet>
+					<h:outputText value="#{examen.categorie}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Type" />
+					</f:facet>
+					<h:outputText value="#{examen.type}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Commencer" />
+					</f:facet>
+
+					<p:commandLink value="Commencer"
+						update=":examenDialog, :form:dataTable"
+						oncomplete="examenDialog.show()" process="@this" ajax="true">
+						<f:setPropertyActionListener value="#{examen}"
+							target="#{examenBean.selectedExamen}" />
+						<f:setPropertyActionListener value="#{examen}"
+							target="#{passageExamenBean.selectedExamen}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog header="Information Sur Examen" widgetVar="examenDialog"
+			resizable="false" id="examenDialog" hideEffect="explode" modal="true"
+			appendToBody="true">
+			<h:form id="examenQuestion">
+
+				<h:panelGrid id="display" columns="2" cellpadding="4"
+					style="margin:0 auto;">
+					<h:outputText value="Titre :"></h:outputText>
+					<h:outputLabel value="#{passageExamenBean.selectedExamen.titre}" />
+
+					<h:outputText value="Type :"></h:outputText>
+					<h:outputLabel value="#{passageExamenBean.selectedExamen.type}" />
+
+					<h:outputText value="Durée :"></h:outputText>
+					<h:outputLabel value="20 min" />
+
+					<h:outputText value="Règle 1 :"></h:outputText>
+					<h:outputText
+						value="durée maximale pour répondre à une question est : 60 seconde" />
+
+					<h:outputText value="Règle 2:"></h:outputText>
+					<h:outputText value="le nombre maximal des réponses fausses est 5" />
+
+					<f:facet name="footer">
+						<p:commandButton value="Commencer l'examen"
+							action="#{passageExamenBean.startExamen}"
+							oncomplete="examenDialog.hide();passageExamenDialog.show();"
+							update=":passageExamenDialog" />
+					</f:facet>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Examen en cours ..." widgetVar="passageExamenDialog"
+			resizable="false" id="passageExamenDialog" hideEffect="explode"  closable="false"
+			modal="true" draggable="false" appendToBody="true">
+			<h:form id="passageExamenQuestion">
+
+				<h:panelGrid id="display" columns="1" cellpadding="10"
+					style="margin:0 auto;">
+					<p:outputLabel   value="Score : #{passageExamenBean.nbfaussesReponses}" />
+					<p:outputLabel   value=" temps Restant: #{passageExamenBean.intervalle}"/>
+					<c:if
+						test="#{passageExamenBean.selectedExamen.type == 'VraiFaux' }">
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:outputLabel
+								value="#{passageExamenBean.selectedQuestion.question}" />
+							<p:selectOneRadio     layout="pageDirection" value="#{passageExamenBean.reponseQD.reponseVF}"  >
+								<f:selectItem itemLabel="Vrai" itemValue="Vrai" />
+								<f:selectItem itemLabel="Faux" itemValue="Faux" />
+							</p:selectOneRadio>
+						</h:panelGrid>
+					</c:if>
+
+					<c:if
+						test="#{passageExamenBean.selectedExamen.type == 'ChoixMult' }">
+						<h:panelGrid columns="1" cellpadding="10">
+							<p:outputLabel		value="#{passageExamenBean.selectedQuestion.question}" />
+							<p:selectOneRadio value="#{passageExamenBean.reponseQMC.choix}"   layout="pageDirection" >
+								<f:selectItems value="#{passageExamenBean.selectedQuestion.choix}" var="_c"  itemLabel="#{_c.choix}" itemValue="#{_c}" />
+								<f:converter
+									converterId="com.e2a.examenenligne.converter.ObjectConverter" />
+							</p:selectOneRadio>
+						</h:panelGrid>
+					</c:if>
+                         	<f:facet name="footer">
+								<p:commandButton icon="ui-icon-check"  action="#{passageExamenBean.doNext}"		type="submit" value="Suivant" 
+									 update=":passageExamenQuestion" />
+							</f:facet>
+					<p:poll autoStart="true" id="p" interval="1" 	listener="#{passageExamenBean.controlExamen}"	update=":passageExamenQuestion" />
+
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

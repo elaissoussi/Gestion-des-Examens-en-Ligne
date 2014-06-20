@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+<h:body>
+<p:fieldset  legend="BienVenue M.#{request.getUserPrincipal().getName()}">
+
+<p:panel header="Proposition des Examens">
+<a href="#{facesContext.externalContext.requestContextPath}/Expert/examMC.xhtml" >Proposer  un Examen  à choix Multiples</a> <br/>
+<a href="#{facesContext.externalContext.requestContextPath}/Expert/examQD.xhtml" >Proposer un Examen à Questions Directes</a>
+</p:panel> 
+<p:panel header="Afichage des Examens">
+ <a href="#{facesContext.externalContext.requestContextPath}/Expert/listExam.xhtml" >Afficher les Examens proposés</a>
+</p:panel>
+<p:panel header="Gestion profil">
+<a href="#{facesContext.externalContext.requestContextPath}/Expert/gererProfil.xhtml" >Gérer votre Profil</a>
+</p:panel>
+</p:fieldset>
+</h:body>
+	</ui:define>
+</ui:composition>
+</html>

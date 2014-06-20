@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="center">
+<h:body>
+ 
+ 
+
+   <h:form>    
+                 <p:selectOneMenu id="categorie" value="#{proposExamQDBean.exam.categorie}" required="true">  
+                 <f:selectItem itemLabel="Selectionner la catégorie" itemValue="" />  
+                 <f:selectItems value="#{proposExamQDBean.listCategories}" />  
+                 </p:selectOneMenu>
+                 
+                  <p:outputLabel for="Titre" value="Titre de L' examen" />
+				  <p:inputText value="#{proposExamQDBean.exam.titre}" id="Titre" required="true" label="Titre" />
+				  
+                  <p:separator />  
+    <h:dataTable Rules="all"  value="#{proposExamQDBean.questions}"  var="quest">
+     <p:column>
+
+      <ui:repeat value="Question N° #{quest.order}" var="ordre" >
+        #{ordre}
+    </ui:repeat>
+     </p:column>
+    
+    <h:column>
+      <f:facet name="header">
+      <h:outputText value="Question" />
+      </f:facet>
+      <h:inputTextarea rows="3" cols="50" value="#{quest.question}" queryDelay="150" minQueryLength="4"  />
+    </h:column>
+    
+    
+    <h:column>
+    
+      <f:facet name="header">
+      <h:outputText value="Réponse" />
+      </f:facet>
+        <p:selectOneButton value="#{quest.reponseVF}">  
+            <f:selectItem itemLabel="Vrai" itemValue="Vrai" />  
+            <f:selectItem itemLabel="Faux" itemValue="Faux" />   
+        </p:selectOneButton> 
+    </h:column>
+    </h:dataTable>
+     <p:separator />  
+   <p:commandButton action="#{proposExamQDBean.newExamQD}"  type="submit" value="Valider"/>
+  
+</h:form>
+</h:body>
+	</ui:define>
+	
+</ui:composition>
+</html>
